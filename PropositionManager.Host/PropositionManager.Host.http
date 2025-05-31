@@ -1,0 +1,6 @@
+@PropositionManager.Host_HostAddress = http://localhost:5185
+
+GET {{PropositionManager.Host_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

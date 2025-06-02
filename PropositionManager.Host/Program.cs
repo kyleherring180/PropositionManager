@@ -27,6 +27,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+using var scope = app.Services.CreateScope();
+await using var context = scope.ServiceProvider.GetRequiredService<PropositionManagerContext>();
+if (context.Database.IsSqlServer())
+{
+    await context.Database.MigrateAsync();
+}
+
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"

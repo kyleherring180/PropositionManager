@@ -1,9 +1,10 @@
+using PropositionManager.Model.Base;
 using PropositionManager.Model.Enums;
 using PropositionManager.Model.Shared;
 
 namespace PropositionManager.Model.Entities;
 
-public class Price
+public class Price : BaseEntity
 {
     public Guid Id { get; init; }
     public string Name { get; private set; }

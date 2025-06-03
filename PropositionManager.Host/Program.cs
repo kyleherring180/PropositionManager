@@ -10,10 +10,10 @@ var connectionString = builder.Configuration.GetConnectionString("PropositionMan
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<PropositionManagerContext>(o => o.UseSqlServer(connectionString));
-
-builder.Services
-    .AddData(connectionString);
+// builder.Services.AddDbContext<PropositionManagerContext>(o => o.UseSqlServer(connectionString));
+//
+// builder.Services
+//     .AddData(connectionString);
 //AddApplicationLayer and QueueDispatcher
 
 var app = builder.Build();
@@ -25,14 +25,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 using var scope = app.Services.CreateScope();
-await using var context = scope.ServiceProvider.GetRequiredService<PropositionManagerContext>();
-if (context.Database.IsSqlServer())
-{
-    await context.Database.MigrateAsync();
-}
+// await using var context = scope.ServiceProvider.GetRequiredService<PropositionManagerContext>();
+// if (context.Database.IsSqlServer())
+// {
+//     await context.Database.MigrateAsync();
+// }
 
 var summaries = new[]
 {

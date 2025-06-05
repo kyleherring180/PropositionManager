@@ -8,7 +8,7 @@ public class Proposition : BaseEntity
     private readonly List<PropositionPrice> _propositionPrices = new();
     
     public Guid Id { get; init; }
-    public string Name { get; private set; }
+    public string Name { get; private set; } = "";
     public Period MarketPeriod { get; set; }
-    public IReadOnlyCollection<PropositionPrice> PropositionPrices { get; set; }
+    public IReadOnlyCollection<PropositionPrice> PropositionPrices => _propositionPrices.AsReadOnly();
 }

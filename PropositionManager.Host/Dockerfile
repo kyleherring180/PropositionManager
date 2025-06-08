@@ -1,6 +1,9 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
 WORKDIR /app
+# Force SQL Server to use invariant culture
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true
+# Prevent SQL Client from using specific culture
+ENV MSSQL_LCID=127
 EXPOSE 8080
 EXPOSE 8081
 

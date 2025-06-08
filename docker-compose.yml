@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
   api:
@@ -10,19 +10,34 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
-      - ConnectionStrings__PropositionManager=Server=db;Database=PropositionManager;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True
+      - ConnectionStrings__PropositionManager=Server=db;Database=PropositionManager;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True;Encrypt=False
     depends_on:
       - db
+    networks:
+      - proposition-network
 
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       - ACCEPT_EULA=Y
+      - SA_PASSWORD=${MSSQL_SA_PASSWORD}
       - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
     ports:
       - "1433:1433"
     volumes:
       - sqldata:/var/opt/mssql
+    networks:
+      - proposition-network
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "${MSSQL_SA_PASSWORD}" -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+networks:
+  proposition-network:
+    driver: bridge
 
 volumes:
   sqldata:

@@ -41,10 +41,10 @@ public class PropositionManagerContext : DbContext
 
     private static void ApplyEnumData(ModelBuilder modelBuilder)
     {
-        AddEnumData<CurrencyEntity, Currency>(modelBuilder);
-        AddEnumData<PriceStatusEntity, PriceStatus>(modelBuilder);
-        AddEnumData<ProductTypeEntity, ProductType>(modelBuilder);
-        AddEnumData<TariffDurationUnitEntity, TariffDurationUnit>(modelBuilder);
+        AddEnumData<CurrencyEntity, Currency>(modelBuilder, false);
+        AddEnumData<PriceStatusEntity, PriceStatus>(modelBuilder, false);
+        AddEnumData<ProductTypeEntity, ProductType>(modelBuilder, false);
+        AddEnumData<TariffDurationUnitEntity, TariffDurationUnit>(modelBuilder, false);
     }
 
     private static void AddEnumData<TEntity, TEnum>(ModelBuilder modelBuilder, bool skipEnumDefaultValue = true)
@@ -62,12 +62,7 @@ public class PropositionManagerContext : DbContext
                 continue;
             }
 
-            string description = enumType.GetMember(name).Single()
-                .GetCustomAttributes(typeof(DebuggableAttribute), false)
-                .Cast<DescriptionAttribute>()
-                .FirstOrDefault()?.Description;
-
-            modelBuilder.Entity<TEntity>().HasData(new TEntity { Id = id, Description = description, Name = name });
+            modelBuilder.Entity<TEntity>().HasData(new TEntity { Id = id, Name = name });
         }
     }
 }

@@ -10,10 +10,8 @@ var connectionString = builder.Configuration.GetConnectionString("PropositionMan
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<PropositionManagerContext>(o => o.UseSqlServer(connectionString));
 
-builder.Services
-    .AddData(connectionString);
+builder.Services.AddData(connectionString);
 //AddApplicationLayer and QueueDispatcher
 
 var app = builder.Build();
@@ -31,7 +29,16 @@ using var scope = app.Services.CreateScope();
 await using var context = scope.ServiceProvider.GetRequiredService<PropositionManagerContext>();
 if (context.Database.IsSqlServer())
 {
-    await context.Database.MigrateAsync();
+    try
+    {
+        await context.Database.MigrateAsync();
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating the database.");
+        throw;
+    }
 }
 
 var summaries = new[]

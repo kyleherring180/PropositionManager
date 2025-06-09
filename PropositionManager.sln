@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropositionManager.QueueDis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropositionManager.Console", "PropositionManager.Console\PropositionManager.Console.csproj", "{A9DFB4DC-0C44-4FA7-8739-741F4C0274CE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropositionManager.Contracts", "PropositionManager.Contracts\PropositionManager.Contracts.csproj", "{5504EFA7-22F0-4BF6-BE3C-C951D24014E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,7 @@ Global
 		{4EE18F36-61F6-4DFE-8886-3D596DB1B234} = {2E41AD80-6355-4E3B-A001-139B32CAE93B}
 		{1D90C2A0-434E-428F-827B-D59736D53EB4} = {2E41AD80-6355-4E3B-A001-139B32CAE93B}
 		{A9DFB4DC-0C44-4FA7-8739-741F4C0274CE} = {2E41AD80-6355-4E3B-A001-139B32CAE93B}
+		{5504EFA7-22F0-4BF6-BE3C-C951D24014E2} = {2E41AD80-6355-4E3B-A001-139B32CAE93B}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8FF414D3-84F6-4FA1-846B-7510096CE911}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -61,5 +64,9 @@ Global
 		{A9DFB4DC-0C44-4FA7-8739-741F4C0274CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9DFB4DC-0C44-4FA7-8739-741F4C0274CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9DFB4DC-0C44-4FA7-8739-741F4C0274CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5504EFA7-22F0-4BF6-BE3C-C951D24014E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5504EFA7-22F0-4BF6-BE3C-C951D24014E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5504EFA7-22F0-4BF6-BE3C-C951D24014E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5504EFA7-22F0-4BF6-BE3C-C951D24014E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

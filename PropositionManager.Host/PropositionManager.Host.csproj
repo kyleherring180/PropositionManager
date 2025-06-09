@@ -9,6 +9,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Asp.Versioning.Abstractions" Version="8.1.0" />
+        <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
+        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5">
@@ -24,6 +27,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\PropositionManager.Data\PropositionManager.Data.csproj" />
+      <ProjectReference Include="..\PropositionManager.Presentation\PropositionManager.Presentation.csproj" />
     </ItemGroup>
 
     <ItemGroup>

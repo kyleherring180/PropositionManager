@@ -11,8 +11,10 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["PropositionManager.Host/PropositionManager.Host.csproj", "PropositionManager.Host/"]
-COPY ["PropositionManager.Data/PropositionManager.Data.csproj", "PropositionManager.Data/"]
+COPY ["PropositionManager.Presentation/PropositionManager.Presentation.csproj", "PropositionManager.Presentation/"]
 COPY ["PropositionManager.Model/PropositionManager.Model.csproj", "PropositionManager.Model/"]
+COPY ["PropositionManager.Data/PropositionManager.Data.csproj", "PropositionManager.Data/"]
+COPY ["PropositionManager.Contracts/PropositionManager.Contracts.csproj", "PropositionManager.Contracts/"]
 RUN dotnet restore "PropositionManager.Host/PropositionManager.Host.csproj"
 COPY . .
 WORKDIR "/src/PropositionManager.Host"

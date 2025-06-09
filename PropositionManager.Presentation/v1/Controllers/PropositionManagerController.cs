@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PropositionManager.Contracts.v1.Request;
 using PropositionManager.Contracts.v1.Response;
 
 namespace PropositionManager.Presentation.v1.Controllers;
@@ -33,5 +34,21 @@ public class PropositionManagerController : ControllerBase
         // This is a placeholder for the actual implementation.
         // You would typically call a service to get the proposition by ID.
         return Ok(new { Message = $"This is a placeholder response for proposition with ID: {id}." });
+    }
+
+    [HttpPut("price")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> UpdatePrice([FromBody] PriceRequest request)
+    {
+        var result = Ok();
+
+        return result switch
+        {
+            OkResult => Ok(new { Message = "Price updated successfully." }),
+            // BadRequestResult => BadRequest(new { Message = "Invalid request." }),
+            // NotFoundResult => NotFound(new { Message = "Price not found." }),
+            // ProblemDetails => StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while updating the price." }),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred." })
+        };
     }
 }

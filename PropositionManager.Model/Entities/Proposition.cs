@@ -11,4 +11,14 @@ public class Proposition : BaseEntity
     public string Name { get; private set; } = "";
     public Period MarketPeriod { get; set; }
     public IReadOnlyCollection<PropositionPrice> PropositionPrices => _propositionPrices.AsReadOnly();
+
+
+    private Proposition() { /*Required for EF Core */ }
+    
+    public Proposition(string name, Period marketPeriod)
+    {
+        Id = Guid.NewGuid();
+        Name = name;
+        MarketPeriod = marketPeriod;
+    }
 }

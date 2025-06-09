@@ -77,6 +77,26 @@ namespace PropositionManager.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TariffDurations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TariffDurationUnit = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TariffDurations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TariffDurations_Dictionary_TariffDurationUnit_TariffDurationUnit",
+                        column: x => x.TariffDurationUnit,
+                        principalTable: "Dictionary_TariffDurationUnit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Prices",
                 columns: table => new
                 {
@@ -85,10 +105,8 @@ namespace PropositionManager.Data.Migrations
                     ProductType = table.Column<int>(type: "int", nullable: false),
                     Currency = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(19,6)", precision: 19, scale: 6, nullable: false),
+                    TariffDurationId = table.Column<int>(type: "int", nullable: false),
                     PriceStatus = table.Column<int>(type: "int", nullable: false),
-                    PriceDuration_Id = table.Column<int>(type: "int", nullable: false),
-                    PriceDuration_Quantity = table.Column<int>(type: "int", nullable: false),
-                    PriceDuration_TariffDurationUnit = table.Column<int>(type: "int", nullable: false),
                     PeriodFrom = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     PeriodUntil = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     Version = table.Column<int>(type: "int", nullable: false)
@@ -114,23 +132,10 @@ namespace PropositionManager.Data.Migrations
                         principalTable: "Dictionary_ProductType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TariffDurations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    TariffDurationUnit = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TariffDurations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TariffDurations_Dictionary_TariffDurationUnit_TariffDurationUnit",
-                        column: x => x.TariffDurationUnit,
-                        principalTable: "Dictionary_TariffDurationUnit",
+                        name: "FK_Prices_TariffDurations_TariffDurationId",
+                        column: x => x.TariffDurationId,
+                        principalTable: "TariffDurations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -230,6 +235,11 @@ namespace PropositionManager.Data.Migrations
                 column: "ProductType");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Prices_TariffDurationId",
+                table: "Prices",
+                column: "TariffDurationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PropositionPrices_PriceId",
                 table: "PropositionPrices",
                 column: "PriceId");
@@ -252,16 +262,10 @@ namespace PropositionManager.Data.Migrations
                 name: "PropositionPrices");
 
             migrationBuilder.DropTable(
-                name: "TariffDurations");
-
-            migrationBuilder.DropTable(
                 name: "Prices");
 
             migrationBuilder.DropTable(
                 name: "Propositions");
-
-            migrationBuilder.DropTable(
-                name: "Dictionary_TariffDurationUnit");
 
             migrationBuilder.DropTable(
                 name: "Dictionary_Currency");
@@ -271,6 +275,12 @@ namespace PropositionManager.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Dictionary_ProductType");
+
+            migrationBuilder.DropTable(
+                name: "TariffDurations");
+
+            migrationBuilder.DropTable(
+                name: "Dictionary_TariffDurationUnit");
         }
     }
 }

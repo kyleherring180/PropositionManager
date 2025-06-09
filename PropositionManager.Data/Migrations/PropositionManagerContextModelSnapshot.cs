@@ -228,23 +228,12 @@ namespace PropositionManager.Data.Migrations
                     b.Property<int>("ProductType")
                         .HasColumnType("int");
 
+                    b.Property<int>("TariffDurationId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Version")
                         .IsConcurrencyToken()
                         .HasColumnType("int");
-
-                    b.ComplexProperty<Dictionary<string, object>>("PriceDuration", "PropositionManager.Model.Entities.Price.PriceDuration#TariffDuration", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<int>("Id")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Quantity")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("TariffDurationUnit")
-                                .HasColumnType("int");
-                        });
 
                     b.ComplexProperty<Dictionary<string, object>>("PricePeriod", "PropositionManager.Model.Entities.Price.PricePeriod#Period", b1 =>
                         {
@@ -264,6 +253,8 @@ namespace PropositionManager.Data.Migrations
                     b.HasIndex("PriceStatus");
 
                     b.HasIndex("ProductType");
+
+                    b.HasIndex("TariffDurationId");
 
                     b.ToTable("Prices");
                 });
@@ -335,7 +326,10 @@ namespace PropositionManager.Data.Migrations
             modelBuilder.Entity("PropositionManager.Model.Entities.TariffDuration", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -369,6 +363,14 @@ namespace PropositionManager.Data.Migrations
                         .HasForeignKey("ProductType")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("PropositionManager.Model.Entities.TariffDuration", "PriceDuration")
+                        .WithMany()
+                        .HasForeignKey("TariffDurationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("PriceDuration");
                 });
 
             modelBuilder.Entity("PropositionManager.Model.Entities.PropositionPrice", b =>

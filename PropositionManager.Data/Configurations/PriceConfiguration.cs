@@ -21,7 +21,7 @@ public class PriceConfiguration : IEntityTypeConfiguration<Price>
         builder.Property(p => p.Amount).HasStandardPrecision();
         builder.HasMany(p => p.PropositionPrices).WithOne(pp => pp.Price).HasForeignKey(FkPrice);
         builder.ComplexProperty(p => p.PricePeriod, y => y.ConfigurePeriod());
-        builder.ComplexProperty(p => p.PriceDuration, y => y.ConfigureTariffDuration());
+        builder.HasOne(p => p.PriceDuration).WithMany().HasForeignKey(TariffDurationConfiguration.FkTariffDuration);
         builder.ConfigureVersionConcurrency();
     }
 }

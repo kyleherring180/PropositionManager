@@ -13,8 +13,22 @@ public class Price : BaseEntity
     public ProductType ProductType { get; private set; }
     public Currency Currency { get; private set; }
     public decimal Amount { get; private set; }
-    public TariffDuration PriceDuration { get; private set; } = new();
+    public TariffDuration PriceDuration { get; private set; }
     public PriceStatus PriceStatus { get; private set; }
     
     public IReadOnlyCollection<PropositionPrice> PropositionPrices => _propositionPrices.AsReadOnly();
+    
+    private Price() { /*Required for EF Core */ }
+    
+    public Price(string name, Period pricePeriod, ProductType productType, Currency currency, decimal amount, TariffDuration priceDuration)
+    {
+        Id = Guid.NewGuid();
+        Name = name;
+        PricePeriod = pricePeriod;
+        ProductType = productType;
+        Currency = currency;
+        Amount = amount;
+        PriceDuration = priceDuration;
+        PriceStatus = PriceStatus.Created;
+    }
 }

@@ -29,15 +29,18 @@ using var scope = app.Services.CreateScope();
 await using var context = scope.ServiceProvider.GetRequiredService<PropositionManagerContext>();
 if (context.Database.IsSqlServer())
 {
-    try
+    for (int retries = 0; retries < 5; retries++)
     {
-        await context.Database.MigrateAsync();
-    }
-    catch (Exception ex)
-    {
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred while migrating the database.");
-        throw;
+        try
+        {
+            await context.Database.MigrateAsync();
+            break;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Database not ready ({ex.Message}), retrying in 5s...");
+            await Task.Delay(5000);
+        }
     }
 }
 

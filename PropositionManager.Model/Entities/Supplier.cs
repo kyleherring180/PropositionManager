@@ -17,6 +17,11 @@ public class Supplier : BaseEntity
     
     public Supplier(string name)
     {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("Supplier name cannot be null or empty.", nameof(name));
+        }
+        
         Name = name;
     }
     

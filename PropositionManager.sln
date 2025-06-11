@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropositionManager.Console"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropositionManager.Contracts", "PropositionManager.Contracts\PropositionManager.Contracts.csproj", "{5504EFA7-22F0-4BF6-BE3C-C951D24014E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropositionManager.ModelTests", "PropositionManager.ModelTests\PropositionManager.ModelTests.csproj", "{33ECB268-09C9-4C3C-A522-5B8B243C7D77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,7 @@ Global
 		{1D90C2A0-434E-428F-827B-D59736D53EB4} = {2E41AD80-6355-4E3B-A001-139B32CAE93B}
 		{A9DFB4DC-0C44-4FA7-8739-741F4C0274CE} = {2E41AD80-6355-4E3B-A001-139B32CAE93B}
 		{5504EFA7-22F0-4BF6-BE3C-C951D24014E2} = {2E41AD80-6355-4E3B-A001-139B32CAE93B}
+		{33ECB268-09C9-4C3C-A522-5B8B243C7D77} = {84D355B2-9562-41CA-B31A-42F7939277A5}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8FF414D3-84F6-4FA1-846B-7510096CE911}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -68,5 +71,9 @@ Global
 		{5504EFA7-22F0-4BF6-BE3C-C951D24014E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5504EFA7-22F0-4BF6-BE3C-C951D24014E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5504EFA7-22F0-4BF6-BE3C-C951D24014E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33ECB268-09C9-4C3C-A522-5B8B243C7D77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33ECB268-09C9-4C3C-A522-5B8B243C7D77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33ECB268-09C9-4C3C-A522-5B8B243C7D77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33ECB268-09C9-4C3C-A522-5B8B243C7D77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

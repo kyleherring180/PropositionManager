@@ -15,6 +15,7 @@ public class Price : BaseEntity
     public decimal Amount { get; private set; }
     public TariffDuration PriceDuration { get; private set; }
     public PriceStatus PriceStatus { get; private set; }
+    public Supplier Supplier { get; private set; }
     
     public IReadOnlyCollection<PropositionPrice> PropositionPrices => _propositionPrices.AsReadOnly();
     

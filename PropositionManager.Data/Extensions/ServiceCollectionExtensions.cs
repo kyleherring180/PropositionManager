@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using PropositionManager.Application.Abstraction.Repositories;
+using PropositionManager.Data.Repositories;
 
 namespace PropositionManager.Data.Extensions;
 
@@ -18,6 +20,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<Func<DateTime>>(f => () => DateTime.Now);
         
         //Add Repository methods
+        services.AddScoped<ISupplierRepository, SupplierRepository>();
 
         return services;
     }

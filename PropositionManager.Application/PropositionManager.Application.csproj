@@ -8,8 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Abstraction\" />
-      <Folder Include="Services\" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\PropositionManager.Model\PropositionManager.Model.csproj" />
     </ItemGroup>
 
 </Project>

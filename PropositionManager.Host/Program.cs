@@ -3,6 +3,7 @@ using PropositionManager.Data;
 using PropositionManager.Data.Extensions;
 using Asp.Versioning;
 using Microsoft.OpenApi.Models;
+using PropositionManager.Application.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +31,9 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "Proposition Manager API", Version = "v1" });
 });
 
-builder.Services.AddData(connectionString);
+builder.Services
+    .AddData(connectionString)
+    .AddApplicationServices();
 //AddApplicationLayer and QueueDispatcher
 
 var app = builder.Build();
@@ -68,8 +71,3 @@ if (context.Database.IsSqlServer())
 app.MapControllers(); 
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

@@ -19,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\PropositionManager.Application\PropositionManager.Application.csproj" />
       <ProjectReference Include="..\PropositionManager.Contracts\PropositionManager.Contracts.csproj" />
     </ItemGroup>
 

@@ -26,6 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\PropositionManager.Application\PropositionManager.Application.csproj" />
       <ProjectReference Include="..\PropositionManager.Data\PropositionManager.Data.csproj" />
       <ProjectReference Include="..\PropositionManager.Presentation\PropositionManager.Presentation.csproj" />
     </ItemGroup>

@@ -23,6 +23,7 @@ public class PropositionManagerContext : DbContext
     public DbSet<Price> Prices { get; set; }
     public DbSet<PropositionPrice> PropositionPrices { get; set; }
     public DbSet<TariffDuration> TariffDurations { get; set; }
+    public DbSet<Supplier> Suppliers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

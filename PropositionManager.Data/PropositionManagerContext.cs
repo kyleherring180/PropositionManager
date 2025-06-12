@@ -24,6 +24,9 @@ public class PropositionManagerContext : DbContext
     public DbSet<PropositionPrice> PropositionPrices { get; set; }
     public DbSet<TariffDuration> TariffDurations { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
+    public DbSet<CostType> CostTypes { get; set; }
+    public DbSet<PriceTimeConstraint> PriceTimeConstraints { get; set; }
+    public DbSet<PriceTimeConstraintPrice> PriceTimeConstraintPrices { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

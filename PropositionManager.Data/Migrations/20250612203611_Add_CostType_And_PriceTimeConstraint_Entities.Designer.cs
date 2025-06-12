@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PropositionManager.Data;
 
@@ -12,9 +13,11 @@ using PropositionManager.Data;
 namespace PropositionManager.Data.Migrations
 {
     [DbContext(typeof(PropositionManagerContext))]
-    partial class PropositionManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20250612203611_Add_CostType_And_PriceTimeConstraint_Entities")]
+    partial class Add_CostType_And_PriceTimeConstraint_Entities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

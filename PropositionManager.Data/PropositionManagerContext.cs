@@ -49,6 +49,7 @@ public class PropositionManagerContext : DbContext
         AddEnumData<PriceStatusEntity, PriceStatus>(modelBuilder, false);
         AddEnumData<ProductTypeEntity, ProductType>(modelBuilder, false);
         AddEnumData<TariffDurationUnitEntity, TariffDurationUnit>(modelBuilder, false);
+        AddEnumData<DaysOfWeekEntity, DaysOfWeek>(modelBuilder, false);
     }
 
     private static void AddEnumData<TEntity, TEnum>(ModelBuilder modelBuilder, bool skipEnumDefaultValue = true)

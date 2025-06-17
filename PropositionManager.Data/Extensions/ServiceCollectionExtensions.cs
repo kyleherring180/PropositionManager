@@ -21,6 +21,7 @@ public static class ServiceCollectionExtensions
         
         //Add Repository methods
         services.AddScoped<ISupplierRepository, SupplierRepository>();
+        services.AddScoped<IPriceRepository, PriceRepository>();
 
         return services;
     }

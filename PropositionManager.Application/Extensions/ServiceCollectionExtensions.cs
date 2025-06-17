@@ -10,6 +10,7 @@ public static class ServiceCollectionExtensions
     {
         // Register application services here
         services.AddScoped<ISupplierService, SupplierService>();
+        services.AddScoped<IPriceService, PriceService>();
 
         return services;
     }

@@ -1,10 +1,9 @@
-using PropositionManager.Contracts.v1.Enums;
-using PropositionManager.Contracts.v1.Response;
-using PropositionManager.Contracts.v1.Shared;
+using PropositionManager.Model.Enums;
+using PropositionManager.Model.Shared;
 
-namespace PropositionManager.Contracts.v1.Request;
+namespace PropositionManager.Model.Dtos;
 
-public class PriceRequest
+public class PriceDto
 {
     public string Name { get; set; }
     public Period PricePeriod { get; set; }

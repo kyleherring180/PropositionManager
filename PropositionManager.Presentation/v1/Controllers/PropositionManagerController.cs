@@ -39,12 +39,12 @@ public class PropositionManagerController(ISupplierService supplierService, IPri
         return Ok(new { Message = $"This is a placeholder response for proposition with ID: {id}." });
     }
     
-    [HttpGet("prices")]
+    [HttpGet("prices/{supplierId}")]
     [ProducesResponseType(typeof(IEnumerable<Proposition>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BadRequestResult), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(NotFoundResult), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetPricesBySupplierId([FromQuery] int supplierId)
+    public async Task<IActionResult> GetPricesBySupplierId(int supplierId)
     {
         if (supplierId == 0)
             return BadRequest("SupplierId is a required field.");
@@ -61,6 +61,9 @@ public class PropositionManagerController(ISupplierService supplierService, IPri
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> UpdatePrice([FromBody] PriceRequest request)
     {
+        if(string.IsNullOrWhiteSpace(request.Name))
+            return BadRequest("Price name cannot be empty.");
+
         var result = Ok();
 
         return result switch

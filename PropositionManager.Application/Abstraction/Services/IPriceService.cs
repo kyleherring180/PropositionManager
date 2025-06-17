@@ -1,3 +1,4 @@
+using PropositionManager.Model.Dtos;
 using PropositionManager.Model.Entities;
 
 namespace PropositionManager.Application.Abstraction.Services;
@@ -10,4 +11,11 @@ public interface IPriceService
     /// <param name="supplierId"></param>
     /// <returns></returns>
     Task<List<Price>> GetPricesBySupplierIdAsync(int supplierId);
+    
+    /// <summary>
+    /// Creates a new <see cref="Price"/> in the system.
+    /// </summary>
+    /// <param name="pricedto"></param>
+    /// <returns></returns>
+    Task CreatePriceAsync(PriceDto pricedto);
 }

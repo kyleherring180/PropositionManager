@@ -25,6 +25,7 @@ public class Supplier : BaseEntity
         Name = name;
     }
     
+    
     public void UpdateName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))

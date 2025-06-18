@@ -16,4 +16,12 @@ public class CostType
         
         Name = name;
     }
+    
+    public void UpdateName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Name cannot be empty", nameof(name));
+        
+        Name = name;
+    }
 }

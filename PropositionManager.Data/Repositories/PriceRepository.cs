@@ -35,6 +35,11 @@ public class PriceRepository(PropositionManagerContext context) : IPriceReposito
             ?? throw new KeyNotFoundException($"No prices found for supplier with ID {supplierId}.");
     }
 
+    public Task<List<Price>> GetPricesByCostTypeIdAsync(int costTypeId)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task SaveChangesAsync()
     {
         await context.SaveChangesAsync();

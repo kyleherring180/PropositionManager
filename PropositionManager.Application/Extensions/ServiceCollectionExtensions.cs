@@ -11,6 +11,7 @@ public static class ServiceCollectionExtensions
         // Register application services here
         services.AddScoped<ISupplierService, SupplierService>();
         services.AddScoped<IPriceService, PriceService>();
+        services.AddScoped<ICostTypeService, CostTypeService>();
 
         return services;
     }

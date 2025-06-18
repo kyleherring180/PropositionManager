@@ -1,6 +1,6 @@
 namespace PropositionManager.Application.Enums;
 
-public enum SupplierUpdateStatus
+public enum EntityUpdateStatus
 {
     NotFound,
     NoChange,

@@ -26,6 +26,13 @@ public interface IPriceRepository
     Task<List<Price>> GetPricesBySupplierIdAsync(int supplierId);
     
     /// <summary>
+    /// Retrieves a <see cref="Price"/> by its associated supplier ID.
+    /// </summary>
+    /// <param name="costTypeId"></param>
+    /// <returns></returns>
+    Task<List<Price>> GetPricesByCostTypeIdAsync(int costTypeId);
+    
+    /// <summary>
     /// Persists all changes made in the repository to the database.
     /// </summary>
     /// <returns></returns>

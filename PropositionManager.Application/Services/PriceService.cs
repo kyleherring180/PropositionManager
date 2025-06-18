@@ -1,5 +1,6 @@
 using PropositionManager.Application.Abstraction.Repositories;
 using PropositionManager.Application.Abstraction.Services;
+using PropositionManager.Application.Enums;
 using PropositionManager.Model.Dtos;
 using PropositionManager.Model.Entities;
 
@@ -12,7 +13,19 @@ public class PriceService(IPriceRepository priceRepository) : IPriceService
         return await priceRepository.GetPricesBySupplierIdAsync(supplierId);
     }
 
-    public Task CreatePriceAsync(PriceDto pricedto)
+    /// <summary>
+    /// TODO - Implement this method to retrieve a list of <see cref="CostType"/>
+    /// entities associated with a specific cost type ID.
+    /// </summary>
+    /// <param name="costTypeId"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public Task<List<CostType>> GetPricesByCostTypeIdAsync(int costTypeId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<EntityUpdateStatus> CreatePriceAsync(PriceDto pricedto)
     {
         ValidatePriceDto(pricedto);
 
@@ -26,9 +39,10 @@ public class PriceService(IPriceRepository priceRepository) : IPriceService
             pricedto.CostTypeId,
             pricedto.SupplierId);
 
-        priceRepository.CreatePriceAsync(price);
+        await priceRepository.CreatePriceAsync(price);
+        await priceRepository.SaveChangesAsync();
         
-        return Task.CompletedTask;
+        return EntityUpdateStatus.Success;
     }
     
     private void ValidatePriceDto(PriceDto pricedto)

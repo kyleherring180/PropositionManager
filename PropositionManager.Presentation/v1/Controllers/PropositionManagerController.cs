@@ -6,6 +6,7 @@ using PropositionManager.Application.Enums;
 using PropositionManager.Contracts.v1.Request;
 using PropositionManager.Contracts.v1.Response;
 using PropositionManager.Presentation.v1.MapToContract;
+using PropositionManager.Presentation.v1.MapToModel;
 
 namespace PropositionManager.Presentation.v1.Controllers;
 
@@ -13,7 +14,7 @@ namespace PropositionManager.Presentation.v1.Controllers;
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
 [ApiController]
-public class PropositionManagerController(ISupplierService supplierService, IPriceService priceService) : ControllerBase
+public class PropositionManagerController(ISupplierService supplierService, IPriceService priceService, ICostTypeService costTypeService) : ControllerBase
 {
     [HttpGet("propositions")]
     [ProducesResponseType(typeof(IEnumerable<Proposition>), StatusCodes.Status200OK)]
@@ -59,16 +60,18 @@ public class PropositionManagerController(ISupplierService supplierService, IPri
 
     [HttpPut("price")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdatePrice([FromBody] PriceRequest request)
     {
         if(string.IsNullOrWhiteSpace(request.Name))
             return BadRequest("Price name cannot be empty.");
-
-        var result = Ok();
+        
+        var result = await priceService.CreatePriceAsync(request.ToModel());
 
         return result switch
         {
-            OkResult => Ok(new { Message = "Price updated successfully." }),
+            EntityUpdateStatus.Success => Ok(new { Message = "Price updated successfully." }),
+            EntityUpdateStatus.NoChange => Ok("No changes were made to the price."),
             // BadRequestResult => BadRequest(new { Message = "Invalid request." }),
             // NotFoundResult => NotFound(new { Message = "Price not found." }),
             // ProblemDetails => StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while updating the price." }),
@@ -86,13 +89,35 @@ public class PropositionManagerController(ISupplierService supplierService, IPri
         if (string.IsNullOrWhiteSpace(request.SupplierName))
             return BadRequest("Supplier name cannot be empty.");
         
-        var result = await supplierService.UpdateSupplierAsync(request.SupplierName);
+        var result = await supplierService.CreateOrUpdateSupplierAsync(request.SupplierName, request.SupplierId);
 
         return result switch
         {
-            SupplierUpdateStatus.Success => Ok(new { Message = "Supplier was added/updated successfully." }),
+            EntityUpdateStatus.Success => Ok(new { Message = "Supplier was added/updated successfully." }),
             // BadRequestResult => BadRequest(new { Message = "Invalid request." }),
             // NotFoundResult => NotFound(new { Message = "Price not found." }),
+            // ProblemDetails => StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while updating the price." }),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred." })
+        };
+    }
+    
+    [HttpPut("update-cost-type")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BadRequestResult), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(NotFoundResult), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> UpdateCostType([FromBody] CostTypeRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.Name))
+            return BadRequest("CostType name cannot be empty.");
+
+        var result = await costTypeService.CreateOrUpdateCostTypeAsync(request.Name, request.CostTypeId);
+
+        return result switch
+        {
+            EntityUpdateStatus.Success => Ok(new { Message = "CostType was added/updated successfully." }),
+            // BadRequestResult => BadRequest(new { Message = "Invalid request." }),
+            EntityUpdateStatus.NotFound => NotFound(new { Message = $"CostType with Id {request.CostTypeId} not found." }),
             // ProblemDetails => StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while updating the price." }),
             _ => StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred." })
         };

@@ -10,5 +10,5 @@ public interface ISupplierService
     /// <param name="supplierName"></param>
     /// <param name="supplierId"></param>
     /// <returns></returns>
-    Task<SupplierUpdateStatus> UpdateSupplierAsync(string supplierName, int? supplierId = null);
+    Task<EntityUpdateStatus> CreateOrUpdateSupplierAsync(string supplierName, int? supplierId = null);
 }

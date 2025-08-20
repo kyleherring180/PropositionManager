@@ -7,5 +7,7 @@ public class Proposition
     public Guid PropositionId { get; set; }
     public string Name { get; set; } = string.Empty;
     public Period MarketPeriod { get; set; } = new();
+    public int SupplierId { get; set; }
+    public string SupplierName { get; set; } = string.Empty;
     public IEnumerable<PropositionPrice> PropositionPrices { get; set; } = new List<PropositionPrice>();
 }

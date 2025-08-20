@@ -1,3 +1,5 @@
+using PropositionManager.Model.Extensions;
+
 namespace PropositionManager.Presentation.v1.MapToModel;
 
 public static class PriceRequestExtensions
@@ -19,7 +21,7 @@ public static class PriceRequestExtensions
     
     private static Model.Shared.Period ToModel(this PropositionManager.Contracts.v1.Shared.Period period)
     {
-        return new Model.Shared.Period(period.From, period.Until);
+        return new Model.Shared.Period(period.From.ToDutchDateTimeOffset(), period.Until?.ToDutchDateTimeOffset());
     }
     
     private static Model.Enums.ProductType ToModel(this PropositionManager.Contracts.v1.Enums.ProductType productType)

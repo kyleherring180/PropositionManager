@@ -23,6 +23,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<IPriceRepository, PriceRepository>();
         services.AddScoped<ICostTypeRepository, CostTypeRepository>();
+        services.AddScoped<IPropositionRepository, PropositionRepository>();
 
         return services;
     }

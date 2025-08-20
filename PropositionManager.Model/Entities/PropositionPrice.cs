@@ -12,11 +12,10 @@ public class PropositionPrice : BaseEntity
     
     private PropositionPrice() { /*Required for EF Core */ }
     
-    public PropositionPrice(Proposition proposition, Price price, Period propositionPricePeriod)
+    public PropositionPrice(Proposition proposition, Price price)
     {
         Id = Guid.NewGuid();
         Proposition = proposition;
         Price = price;
-        PropositionPricePeriod = propositionPricePeriod;
     }
 }

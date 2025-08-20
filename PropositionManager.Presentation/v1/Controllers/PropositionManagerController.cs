@@ -5,6 +5,8 @@ using PropositionManager.Application.Abstraction.Services;
 using PropositionManager.Application.Enums;
 using PropositionManager.Contracts.v1.Request;
 using PropositionManager.Contracts.v1.Response;
+using PropositionManager.Model.Extensions;
+using PropositionManager.Model.Shared;
 using PropositionManager.Presentation.v1.MapToContract;
 using PropositionManager.Presentation.v1.MapToModel;
 
@@ -14,7 +16,11 @@ namespace PropositionManager.Presentation.v1.Controllers;
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
 [ApiController]
-public class PropositionManagerController(ISupplierService supplierService, IPriceService priceService, ICostTypeService costTypeService) : ControllerBase
+public class PropositionManagerController(
+    ISupplierService supplierService, 
+    IPriceService priceService, 
+    ICostTypeService costTypeService,
+    IPropositionService propositionService) : ControllerBase
 {
     [HttpGet("propositions")]
     [ProducesResponseType(typeof(IEnumerable<Proposition>), StatusCodes.Status200OK)]
@@ -23,9 +29,14 @@ public class PropositionManagerController(ISupplierService supplierService, IPri
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetPropositions()
     {
-        // This is a placeholder for the actual implementation.
-        // You would typically call a service to get the propositions.
-        return Ok(new { Message = "This is a placeholder response." });
+        var propositions = await propositionService.GetAllPropositionsAsync();
+        
+        if (propositions.Count == 0)
+            return NotFound("No propositions found.");
+        
+        var result = propositions.Select(p => p.ToContract()).ToList();
+        
+        return Ok(result);
     }
     
     [HttpGet("proposition/{id}")]
@@ -35,9 +46,23 @@ public class PropositionManagerController(ISupplierService supplierService, IPri
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetPropositionById(Guid id)
     {
-        // This is a placeholder for the actual implementation.
-        // You would typically call a service to get the proposition by ID.
-        return Ok(new { Message = $"This is a placeholder response for proposition with ID: {id}." });
+        if(id == Guid.Empty)
+            return BadRequest("Proposition ID is a required field.");
+
+        try
+        {
+            var proposition = await propositionService.GetPropositionByIdAsync(id);
+            if (proposition == null)
+                return NotFound($"Proposition with ID {id} not found.");
+            
+            return Ok(proposition.ToContract());
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { Message = $"An error occurred while retrieving the proposition: {ex.Message }" });
+        } 
+        
+        
     }
     
     [HttpGet("prices/{supplierId}")]
@@ -61,7 +86,7 @@ public class PropositionManagerController(ISupplierService supplierService, IPri
     [HttpPut("price")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> UpdatePrice([FromBody] PriceRequest request)
+    public async Task<IActionResult> AddOrUpdatePrice([FromBody] PriceRequest request)
     {
         if(string.IsNullOrWhiteSpace(request.Name))
             return BadRequest("Price name cannot be empty.");
@@ -101,6 +126,40 @@ public class PropositionManagerController(ISupplierService supplierService, IPri
         };
     }
     
+    [HttpPut("add-proposition")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BadRequestResult), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(NotFoundResult), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> AddOrUpdateProposition([FromBody] PropositionRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.Name))
+            return BadRequest("Proposition name cannot be empty.");
+
+        if (request.MartketStartDate == null)
+            return BadRequest("Market start date is a required field.");
+        
+        var marketPeriod = new Period(request.MartketStartDate.ToDutchDateTimeOffset(), request.MarketEndDate?.ToDutchDateTimeOffset());
+
+        if (request.SupplierId == null)
+            return BadRequest("Proposition must be linked to a supplier.");
+        
+        var result = await propositionService.CreateOrUpdatePropositionAsync(
+            request.Name, 
+            marketPeriod, 
+            request.SupplierId, 
+            request.PropositionId);
+
+        return result switch
+        {
+            EntityUpdateStatus.Success => Ok(new { Message = "Proposition was added/updated successfully." }),
+            // BadRequestResult => BadRequest(new { Message = "Invalid request." }),
+            // NotFoundResult => NotFound(new { Message = "Price not found." }),
+            // ProblemDetails => StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while updating the price." }),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred." })
+        };
+    }
+    
     [HttpPut("update-cost-type")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BadRequestResult), StatusCodes.Status400BadRequest)]
@@ -118,6 +177,27 @@ public class PropositionManagerController(ISupplierService supplierService, IPri
             EntityUpdateStatus.Success => Ok(new { Message = "CostType was added/updated successfully." }),
             // BadRequestResult => BadRequest(new { Message = "Invalid request." }),
             EntityUpdateStatus.NotFound => NotFound(new { Message = $"CostType with Id {request.CostTypeId} not found." }),
+            // ProblemDetails => StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while updating the price." }),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred." })
+        };
+    }
+    
+    [HttpPut("add-proposition-price")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> AddOrUpdatePropositionPrice([FromBody] PropositionPriceRequest request)
+    {
+        if(Guid.Empty == request.PropositionId || Guid.Empty == request.PriceId)
+            return BadRequest("PropositionId and PriceId are required fields.");
+
+        var result = await propositionService.CreateOrUpdatePropositionPrice(request.PropositionId, request.PriceId);
+
+        return result switch
+        {
+            EntityUpdateStatus.Success => Ok(new { Message = "Price updated successfully." }),
+            EntityUpdateStatus.NoChange => Ok("No changes were made to the price."),
+            // BadRequestResult => BadRequest(new { Message = "Invalid request." }),
+            // NotFoundResult => NotFound(new { Message = "Price not found." }),
             // ProblemDetails => StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while updating the price." }),
             _ => StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred." })
         };

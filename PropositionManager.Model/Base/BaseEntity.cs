@@ -2,5 +2,5 @@ namespace PropositionManager.Model.Base;
 
 public abstract class BaseEntity
 {
-    public int Version { get; set; }
+    public int Version { get; set; } = 1;
 }
